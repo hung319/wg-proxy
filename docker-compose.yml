@@ -1,0 +1,19 @@
+# /docker-compose.yml
+
+version: "3.8"
+
+services:
+  wireguard-socks:
+    build: . # Chỉ thị cho Docker Compose build image từ Dockerfile trong thư mục hiện tại
+    container_name: wireguard_socks_server
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    volumes:
+      - ./config/wireguard:/etc/wireguard
+      - /lib/modules:/lib/modules:ro
+    ports:
+      - "1080:1080"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
